@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EMSApp">
+        <activity
+            android:name=".UserHomeActivity"
+            android:label="@string/title_activity_user_home"
+            android:theme="@style/Theme.EMSApp.NoActionBar"></activity>
+        <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
