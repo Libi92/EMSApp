@@ -22,4 +22,13 @@
     <style name="Theme.EMSApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.EMSApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MedPrescriptionTimeTitle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MedPrescriptionTimeValue">
+        <item name="android:layout_marginLeft">@dimen/medicine_time_ml</item>>
+        <item name="android:layout_marginRight">@dimen/medicine_time_ml</item>>
+    </style>
 </resources>

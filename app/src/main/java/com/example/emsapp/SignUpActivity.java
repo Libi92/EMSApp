@@ -1,6 +1,5 @@
 package com.example.emsapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,9 +74,7 @@ public class SignUpActivity extends AppCompatActivity implements AuthListener.Si
 
     @Override
     public void onSignUpSuccess() {
-        Toast.makeText(SignUpActivity.this, "Sign Up Success", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-        startActivity(intent);
+        finish();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.emsapp.ui.gallery;
+package com.example.emsapp.ui.consultation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ public class ConsultationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
+        View root = inflater.inflate(R.layout.fragment_consultation, container, false);
 
         return root;
     }
