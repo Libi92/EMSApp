@@ -15,11 +15,43 @@
         android:id="@+id/nav_consultation"
         android:name="com.example.emsapp.ui.consultation.ConsultationFragment"
         android:label="@string/menu_consultation"
-        tools:layout="@layout/fragment_consultation" />
+        tools:layout="@layout/fragment_consultation">
+        <action
+            android:id="@+id/action_nav_consultation_to_nav_doctors_list"
+            app:destination="@id/nav_doctors_list"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit" />
+        <action
+            android:id="@+id/action_nav_consultation_to_nav_schedule_appointment"
+            app:destination="@id/nav_schedule_appointment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.emsapp.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_schedule"
+        android:name="com.example.emsapp.ui.schedule.ScheduleFragment"
+        android:label="@string/menu_schedule"
+        tools:layout="@layout/fragment_schedule" />
+    <fragment
+        android:id="@+id/nav_doctor"
+        android:name="com.example.emsapp.ui.doctor.DoctorFragment"
+        android:label="DoctorFragment"
+        tools:layout="@layout/fragment_doctor" />
+    <fragment
+        android:id="@+id/nav_doctors_list"
+        android:name="com.example.emsapp.ui.doctor.DoctorsListFragment"
+        android:label="DoctorsListFragment"
+        tools:layout="@layout/fragment_doctors_list">
+        <action
+            android:id="@+id/action_nav_doctors_list_to_nav_doctor"
+            app:destination="@id/nav_doctor"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_schedule_appointment"
+        android:name="com.example.emsapp.ui.doctor.ScheduleAppointmentFragment"
+        android:label="ScheduleAppointmentFragment"
+        tools:layout="@layout/fragment_schedule_appointment" />
 </navigation>

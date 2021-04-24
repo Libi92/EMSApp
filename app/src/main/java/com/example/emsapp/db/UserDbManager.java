@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.emsapp.constants.UserState;
 import com.example.emsapp.model.AppUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,18 +12,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
-public class DatabaseManager {
+public class UserDbManager {
     private static final String USER_DB_PATH = "user";
     private static final String USER_TYPE = "userType";
-    private static final String TAG = DatabaseManager.class.getSimpleName();
+    private static final String TAG = UserDbManager.class.getSimpleName();
 
     private final DatabaseReference userDbReference;
 
     private UserListener userListener;
 
-    public DatabaseManager() {
+    public UserDbManager() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         userDbReference = database.getReference(USER_DB_PATH);
     }
@@ -62,15 +62,15 @@ public class DatabaseManager {
         });
     }
 
-    public void getUsers() {
+    public void getUsers(String userType) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                GenericTypeIndicator<List<AppUser>> userListIndicator = new GenericTypeIndicator<List<AppUser>>() {
+                GenericTypeIndicator<Map<String, AppUser>> userListIndicator = new GenericTypeIndicator<Map<String, AppUser>>() {
                 };
-                List<AppUser> appUserList = snapshot.getValue(userListIndicator);
+                Map<String, AppUser> appUserList = snapshot.getValue(userListIndicator);
                 if (userListener != null) {
-                    userListener.onListUser(appUserList);
+                    userListener.onListUser(new ArrayList<>(appUserList.values()));
                 }
             }
 
@@ -79,24 +79,24 @@ public class DatabaseManager {
                 Log.e(TAG, "onCancelled: " + error.getDetails());
             }
         };
-        userDbReference.orderByChild("status").equalTo(UserState.ACTIVE.getValue())
+        userDbReference.orderByChild(USER_TYPE).equalTo(userType)
                 .addValueEventListener(valueEventListener);
     }
 
     public static class Builder {
-        private final DatabaseManager databaseManager;
+        private final UserDbManager userDbManager;
 
         public Builder() {
-            databaseManager = new DatabaseManager();
+            userDbManager = new UserDbManager();
         }
 
         public Builder userListener(UserListener userListener) {
-            databaseManager.userListener = userListener;
+            userDbManager.userListener = userListener;
             return this;
         }
 
-        public DatabaseManager build() {
-            return this.databaseManager;
+        public UserDbManager build() {
+            return this.userDbManager;
         }
     }
 }

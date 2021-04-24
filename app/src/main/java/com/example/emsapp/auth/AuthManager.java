@@ -5,7 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.emsapp.db.DatabaseManager;
+import com.example.emsapp.db.UserDbManager;
 import com.example.emsapp.db.UserListener;
 import com.example.emsapp.model.AppUser;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class AuthManager {
     private static final String TAG = AuthManager.class.getSimpleName();
-    private final DatabaseManager databaseManager;
+    private final UserDbManager userDbManager;
     private final FirebaseAuth mAuth;
     private Activity activity;
     private AuthListener.LoginListener loginListener;
@@ -27,7 +27,7 @@ public class AuthManager {
     public AuthManager() {
         mAuth = FirebaseAuth.getInstance();
 
-        databaseManager = new DatabaseManager.Builder().userListener(new UserListener() {
+        userDbManager = new UserDbManager.Builder().userListener(new UserListener() {
             @Override
             public void onGetUser(AppUser appUser) {
                 if (loginListener != null) {
@@ -56,7 +56,7 @@ public class AuthManager {
                             if (loginListener != null) {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 String uid = user.getUid();
-                                databaseManager.getUser(uid);
+                                userDbManager.getUser(uid);
                             }
                         } else {
                             Log.e(TAG, "onComplete: ", task.getException());
@@ -80,7 +80,7 @@ public class AuthManager {
                         FirebaseUser user = mAuth.getCurrentUser();
 
                         appUser.setUId(user.getUid());
-                        databaseManager.createUser(appUser);
+                        userDbManager.createUser(appUser);
                         if (signUpListener != null) {
                             signUpListener.onSignUpSuccess();
                         }

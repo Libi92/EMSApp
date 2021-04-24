@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.emsapp.R;
 import com.example.emsapp.model.Medicine;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -36,9 +38,20 @@ public class MedicinesRecyclerAdapter extends RecyclerView.Adapter<MedicinesRecy
         holder.textViewMedicineName.setText(medicine.getMedicineName());
         holder.textViewPrescribedBy.setText(String.format(Locale.getDefault(), "Prescribed by %s", medicine.getPrescribedBy()));
         holder.textViewRemainingDays.setText(String.format(Locale.getDefault(), "%d days remaining", medicine.getDaysRemaining()));
-        holder.textViewMorningDoses.setText(String.format(Locale.getDefault(), "%.1f", medicine.getMorningDoses()));
-        holder.textViewAfternoonDoses.setText(String.format(Locale.getDefault(), "%.1f", medicine.getAfterNoonDoses()));
-        holder.textViewNightDoses.setText(String.format(Locale.getDefault(), "%.1f", medicine.getNightDoses()));
+        holder.textViewMorningDoses.setText(getDosesFormat(medicine.getMorningDoses()));
+        holder.textViewAfternoonDoses.setText(getDosesFormat(medicine.getAfterNoonDoses()));
+        holder.textViewNightDoses.setText(getDosesFormat(medicine.getNightDoses()));
+    }
+
+    @NotNull
+    private String getDosesFormat(Float doses) {
+        String format = "%.1f";
+        Object value = doses;
+        if (doses == doses.intValue()) {
+            format = "%d";
+            value = doses.intValue();
+        }
+        return String.format(Locale.getDefault(), format, value);
     }
 
     @Override

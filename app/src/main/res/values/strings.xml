@@ -19,6 +19,8 @@
 
     <string name="menu_medicine">Medicine</string>
     <string name="menu_consultation">Consultation</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_schedule">Schedule</string>
     <string name="update_profile">Update Profile</string>
+    <string name="consult">Consult</string>
+    <string name="requested_on">Requested On</string>
 </resources>

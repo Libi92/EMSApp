@@ -1,5 +1,6 @@
 package com.example.emsapp.ui.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,7 +43,15 @@ public class MedicineFragment extends Fragment {
                 .nightDoses(1F)
                 .build();
         MedicinesRecyclerAdapter adapter = new MedicinesRecyclerAdapter(Collections.singletonList(medicine));
-        recyclerViewMedicines.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        Context context = getContext();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        recyclerViewMedicines.setLayoutManager(layoutManager);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context,
+                layoutManager.getOrientation());
+        recyclerViewMedicines.addItemDecoration(dividerItemDecoration);
+
         recyclerViewMedicines.setAdapter(adapter);
     }
 }

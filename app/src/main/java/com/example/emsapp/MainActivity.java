@@ -13,6 +13,7 @@ import com.example.emsapp.auth.AuthListener;
 import com.example.emsapp.auth.AuthManager;
 import com.example.emsapp.constants.UserType;
 import com.example.emsapp.model.AppUser;
+import com.example.emsapp.util.Globals;
 
 public class MainActivity extends AppCompatActivity implements AuthListener.LoginListener {
 
@@ -59,7 +60,9 @@ public class MainActivity extends AppCompatActivity implements AuthListener.Logi
 
     @Override
     public void onLoginSuccess(AppUser appUser) {
-        if (UserType.USER.getValue().equals(appUser.getUserType())) {
+        if (UserType.USER.getValue().equals(appUser.getUserType()) ||
+                UserType.DOCTOR.getValue().equals(appUser.getUserType())) {
+            Globals.user = appUser;
             Intent intent = new Intent(MainActivity.this, UserHomeActivity.class);
             startActivity(intent);
         } else {
