@@ -1,5 +1,6 @@
 package com.example.emsapp.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConsultationRequest {
+public class ConsultationRequest implements Serializable {
     private String uId;
     private AppUser fromUser;
     private AppUser toDoctor;

@@ -31,4 +31,10 @@
         <item name="android:layout_marginLeft">@dimen/medicine_time_ml</item>>
         <item name="android:layout_marginRight">@dimen/medicine_time_ml</item>>
     </style>
+
+    <style name="DateTimePicker">
+        <item name="android:padding">4dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

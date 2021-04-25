@@ -31,6 +31,7 @@ public class ConsultationDbManager {
 
     public boolean addConsultation(ConsultationRequest consultationRequest) {
         String uId = consultationRequest.getUId() != null ? consultationRequest.getUId() : UUID.randomUUID().toString();
+        consultationRequest.setUId(uId);
         return consultDbReference.child(uId).setValue(consultationRequest).isSuccessful();
     }
 
@@ -45,9 +46,12 @@ public class ConsultationDbManager {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         GenericTypeIndicator<Map<String, ConsultationRequest>> typeIndicator = new GenericTypeIndicator<Map<String, ConsultationRequest>>() {
                         };
-                        Collection<ConsultationRequest> values = snapshot.getValue(typeIndicator).values();
-                        if (consultationListener != null) {
-                            consultationListener.onConsultations(new ArrayList<>(values));
+                        Map<String, ConsultationRequest> snapshotValue = snapshot.getValue(typeIndicator);
+                        if (snapshotValue != null) {
+                            Collection<ConsultationRequest> values = snapshotValue.values();
+                            if (consultationListener != null) {
+                                consultationListener.onConsultations(new ArrayList<>(values));
+                            }
                         }
                     }
 

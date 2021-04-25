@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.emsapp.R;
 import com.example.emsapp.base.BaseFragment;
+import com.example.emsapp.constants.ScheduleStatus;
 import com.example.emsapp.constants.UserType;
 import com.example.emsapp.db.ConsultationDbManager;
 import com.example.emsapp.db.ConsultationListener;
 import com.example.emsapp.model.ConsultationRequest;
 import com.example.emsapp.ui.adapters.ConsultationRecyclerAdapter;
+import com.example.emsapp.ui.doctor.ScheduleAppointmentFragment;
 import com.example.emsapp.util.Globals;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -77,12 +79,18 @@ public class ConsultationFragment extends BaseFragment implements ConsultationLi
     @Override
     public void onConsultations(List<ConsultationRequest> consultationRequests) {
         requestList.clear();
-        requestList.addAll(consultationRequests);
+        for (ConsultationRequest request : consultationRequests) {
+            if (ScheduleStatus.PENDING.getValue().equals(request.getScheduleStatus())) {
+                requestList.add(request);
+            }
+        }
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void OnClick(ConsultationRequest consultationRequest) {
-        doNavigate(R.id.action_nav_consultation_to_nav_schedule_appointment, null);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ScheduleAppointmentFragment.ARG_CONSULT_REQUEST, consultationRequest);
+        doNavigate(R.id.action_nav_consultation_to_nav_schedule_appointment, bundle);
     }
 }
