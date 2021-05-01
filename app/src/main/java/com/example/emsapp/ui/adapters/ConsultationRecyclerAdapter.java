@@ -1,5 +1,6 @@
 package com.example.emsapp.ui.adapters;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.emsapp.R;
+import com.example.emsapp.constants.AdapterType;
+import com.example.emsapp.constants.ScheduleStatus;
 import com.example.emsapp.constants.UserType;
 import com.example.emsapp.model.ConsultationRequest;
 import com.example.emsapp.util.DateUtil;
@@ -19,10 +22,12 @@ import java.util.List;
 public class ConsultationRecyclerAdapter extends RecyclerView.Adapter<ConsultationRecyclerAdapter.ConsultationViewHolder> {
 
     private final List<ConsultationRequest> requestList;
+    private final AdapterType adapterType;
     private ConsultationClickListener clickListener;
 
-    public ConsultationRecyclerAdapter(List<ConsultationRequest> requestList) {
+    public ConsultationRecyclerAdapter(List<ConsultationRequest> requestList, AdapterType adapterType) {
         this.requestList = requestList;
+        this.adapterType = adapterType;
     }
 
     public void setConsultationListener(ConsultationClickListener listener) {
@@ -43,7 +48,25 @@ public class ConsultationRecyclerAdapter extends RecyclerView.Adapter<Consultati
         String displayName = UserType.USER.getValue().equals(Globals.user.getUserType()) ?
                 request.getToDoctor().getDisplayName() : request.getFromUser().getDisplayName();
         holder.textViewName.setText(displayName);
-        holder.textViewRequestedOn.setText(DateUtil.getDate(request.getRequestedOn()));
+
+        if (AdapterType.CONSULTATION.equals(adapterType)) {
+            holder.textViewDateTitle.setText("Requested On: ");
+            holder.textViewRequestedOn.setText(DateUtil.getDate(request.getRequestedOn()));
+        } else {
+            holder.textViewDateTitle.setText("Scheduled On: ");
+            holder.textViewRequestedOn.setText(DateUtil.getDate(request.getSchedulesDateTime()));
+        }
+
+        if (ScheduleStatus.PENDING.getValue().equals(request.getScheduleStatus())) {
+            holder.textViewStatus.setBackgroundColor(Color.CYAN);
+        } else if (ScheduleStatus.SCHEDULED.getValue().equals(request.getScheduleStatus())) {
+            holder.textViewStatus.setBackgroundColor(Color.MAGENTA);
+        } else if (ScheduleStatus.COMPLETE.getValue().equals(request.getScheduleStatus())) {
+            holder.textViewStatus.setBackgroundColor(Color.GREEN);
+        }
+        holder.textViewStatus.setText(request.getScheduleStatus());
+        holder.textViewStatus.setVisibility(View.VISIBLE);
+
         holder.view.setOnClickListener(v -> {
             if (clickListener != null) {
                 clickListener.OnClick(request);
@@ -65,6 +88,8 @@ public class ConsultationRecyclerAdapter extends RecyclerView.Adapter<Consultati
         private final View view;
         private final TextView textViewName;
         private final TextView textViewRequestedOn;
+        private final TextView textViewDateTitle;
+        private final TextView textViewStatus;
 
         public ConsultationViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +97,8 @@ public class ConsultationRecyclerAdapter extends RecyclerView.Adapter<Consultati
             view = itemView;
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewRequestedOn = itemView.findViewById(R.id.textViewRequestedOn);
+            textViewDateTitle = itemView.findViewById(R.id.textViewDateTitle);
+            textViewStatus = itemView.findViewById(R.id.textViewStatus);
         }
     }
 }

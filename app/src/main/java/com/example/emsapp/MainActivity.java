@@ -49,6 +49,11 @@ public class MainActivity extends AppCompatActivity implements AuthListener.Logi
             String email = editTextEmail.getText().toString().trim();
             String password = editTextPassword.getText().toString().trim();
 
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Email / Password cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             authManager.doLogin(email, password);
         });
 

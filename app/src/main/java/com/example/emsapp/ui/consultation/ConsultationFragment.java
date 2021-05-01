@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.emsapp.R;
 import com.example.emsapp.base.BaseFragment;
+import com.example.emsapp.constants.AdapterType;
 import com.example.emsapp.constants.ScheduleStatus;
 import com.example.emsapp.constants.UserType;
 import com.example.emsapp.db.ConsultationDbManager;
@@ -57,7 +58,7 @@ public class ConsultationFragment extends BaseFragment implements ConsultationLi
         recyclerViewConsultations.addItemDecoration(dividerItemDecoration);
 
         requestList = new ArrayList<>();
-        adapter = new ConsultationRecyclerAdapter(requestList);
+        adapter = new ConsultationRecyclerAdapter(requestList, AdapterType.CONSULTATION);
         if (UserType.DOCTOR.getValue().equals(Globals.user.getUserType())) {
             adapter.setConsultationListener(this);
         }

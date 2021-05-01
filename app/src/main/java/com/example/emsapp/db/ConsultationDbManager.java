@@ -2,6 +2,7 @@ package com.example.emsapp.db;
 
 import androidx.annotation.NonNull;
 
+import com.example.emsapp.constants.ScheduleStatus;
 import com.example.emsapp.constants.UserType;
 import com.example.emsapp.model.AppUser;
 import com.example.emsapp.model.ConsultationRequest;
@@ -60,6 +61,11 @@ public class ConsultationDbManager {
 
                     }
                 });
+    }
+
+    public void closeConsultation(ConsultationRequest consultationRequest) {
+        consultationRequest.setScheduleStatus(ScheduleStatus.COMPLETE.getValue());
+        consultDbReference.child(consultationRequest.getUId()).setValue(consultationRequest);
     }
 
     public static class Builder {

@@ -32,16 +32,20 @@
         android:id="@+id/nav_schedule"
         android:name="com.example.emsapp.ui.schedule.ScheduleFragment"
         android:label="@string/menu_schedule"
-        tools:layout="@layout/fragment_schedule" />
+        tools:layout="@layout/fragment_schedule" >
+        <action
+            android:id="@+id/action_nav_schedule_to_nav_schedule_details"
+            app:destination="@id/nav_schedule_details" />
+    </fragment>
     <fragment
         android:id="@+id/nav_doctor"
         android:name="com.example.emsapp.ui.doctor.DoctorFragment"
-        android:label="DoctorFragment"
+        android:label="Doctor"
         tools:layout="@layout/fragment_doctor" />
     <fragment
         android:id="@+id/nav_doctors_list"
         android:name="com.example.emsapp.ui.doctor.DoctorsListFragment"
-        android:label="DoctorsListFragment"
+        android:label="Doctors List"
         tools:layout="@layout/fragment_doctors_list">
         <action
             android:id="@+id/action_nav_doctors_list_to_nav_doctor"
@@ -52,6 +56,11 @@
     <fragment
         android:id="@+id/nav_schedule_appointment"
         android:name="com.example.emsapp.ui.doctor.ScheduleAppointmentFragment"
-        android:label="ScheduleAppointmentFragment"
+        android:label="Schedule Appointment"
         tools:layout="@layout/fragment_schedule_appointment" />
+    <fragment
+        android:id="@+id/nav_schedule_details"
+        android:name="com.example.emsapp.ui.schedule.ScheduleDetailsFragment"
+        android:label="Schedule Details"
+        tools:layout="@layout/fragment_schedule_details" />
 </navigation>
