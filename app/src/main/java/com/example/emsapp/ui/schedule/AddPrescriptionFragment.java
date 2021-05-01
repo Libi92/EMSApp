@@ -1,5 +1,6 @@
 package com.example.emsapp.ui.schedule;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.emsapp.R;
 import com.example.emsapp.constants.UserType;
+import com.example.emsapp.db.MedicinesDbManager;
 import com.example.emsapp.db.PrescriptionDbManager;
 import com.example.emsapp.db.PrescriptionListener;
 import com.example.emsapp.model.ConsultationRequest;
@@ -26,6 +29,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class AddPrescriptionFragment extends BottomSheetDialogFragment implements PrescriptionListener {
@@ -40,6 +44,7 @@ public class AddPrescriptionFragment extends BottomSheetDialogFragment implement
     private EditText editTextEveningDose;
     private Button buttonAddPrescription;
     private Button buttonSave;
+    private Button buttonAddMedicine;
     private RecyclerView recyclerViewPrescriptions;
     private PrescriptionDbManager dbManager;
 
@@ -56,11 +61,6 @@ public class AddPrescriptionFragment extends BottomSheetDialogFragment implement
     }
 
     private void initLayout(View view) {
-        if (UserType.USER.getValue().equals(Globals.user.getUserType())) {
-            View inputView = view.findViewById(R.id.constraintLayoutInput);
-            inputView.setVisibility(View.INVISIBLE);
-        }
-
         editTextMedicineName = view.findViewById(R.id.editTextMedicineName);
         editTextNoOfDays = view.findViewById(R.id.editTextNoOfDays);
         editTextMorningDose = view.findViewById(R.id.editTextMorningDose);
@@ -68,6 +68,7 @@ public class AddPrescriptionFragment extends BottomSheetDialogFragment implement
         editTextEveningDose = view.findViewById(R.id.editTextEveningDose);
         buttonAddPrescription = view.findViewById(R.id.buttonAddPrescription);
         buttonSave = view.findViewById(R.id.buttonSave);
+        buttonAddMedicine = view.findViewById(R.id.buttonAddMedicine);
 
         recyclerViewPrescriptions = view.findViewById(R.id.recyclerViewPrescriptions);
 
@@ -88,6 +89,12 @@ public class AddPrescriptionFragment extends BottomSheetDialogFragment implement
                     .setUId(consultationRequest.getUId())
                     .setPrescriptionListener(this)
                     .build();
+        }
+
+        if (UserType.USER.getValue().equals(Globals.user.getUserType())) {
+            View inputView = view.findViewById(R.id.constraintLayoutInput);
+            inputView.setVisibility(View.GONE);
+            buttonAddMedicine.setVisibility(View.VISIBLE);
         }
     }
 
@@ -133,9 +140,40 @@ public class AddPrescriptionFragment extends BottomSheetDialogFragment implement
             if (dbManager != null) {
                 dbManager.addPrescription(medicines);
             }
-            Snackbar.make(getView(), "Prescriptions saved", Snackbar.LENGTH_SHORT)
-                    .setAction("Ok", v1 -> dismiss())
-                    .show();
+            Snackbar.make(getView(), "Prescriptions saved", Snackbar.LENGTH_SHORT).show();
+            dismiss();
+        });
+
+        buttonAddMedicine.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year1, month1, dayOfMonth) -> {
+                calendar.set(year1, month1, dayOfMonth, 0, 0, 0);
+
+                medicines.forEach(medicine -> {
+                    long timeInMillis = calendar.getTimeInMillis();
+                    medicine.setStartDate(timeInMillis);
+
+                    Calendar calendarEndDate = Calendar.getInstance();
+                    calendarEndDate.setTimeInMillis(timeInMillis);
+                    calendarEndDate.add(Calendar.DATE, medicine.getDaysRemaining());
+
+                    medicine.setEndDate(calendarEndDate.getTimeInMillis());
+                });
+
+                MedicinesDbManager medicinesDbManager = new MedicinesDbManager.Builder()
+                        .setUserId(Globals.user.getUId())
+                        .build();
+                medicinesDbManager.addMedicines(consultationRequest.getUId(), medicines);
+
+                Toast.makeText(getContext(), "Medicine Alert Added", Toast.LENGTH_SHORT).show();
+                dismiss();
+            }, year, month, day);
+            datePickerDialog.setTitle("Select Start Date");
+            datePickerDialog.show();
         });
     }
 

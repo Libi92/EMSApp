@@ -30,4 +30,6 @@
     <string name="days_of_intake">No of days for intake</string>
     <string name="medicine_name">Medicine Name</string>
     <string name="add">Add</string>
+    <string name="save">Save</string>
+    <string name="add_medicine_alert">Add Medicine Alert</string>
 </resources>

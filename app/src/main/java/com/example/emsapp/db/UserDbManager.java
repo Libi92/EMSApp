@@ -42,6 +42,7 @@ public class UserDbManager {
                 if (userListener != null) {
                     if (snapshot.getValue() != null) {
                         AppUser appUser = new AppUser();
+                        appUser.setUId(uId);
                         appUser.setUserType(snapshot.child(USER_TYPE).getValue(String.class));
                         appUser.setAddress(snapshot.child("address").getValue(String.class));
                         appUser.setDisplayName(snapshot.child("displayName").getValue(String.class));

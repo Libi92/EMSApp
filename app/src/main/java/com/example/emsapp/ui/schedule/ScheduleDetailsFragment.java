@@ -24,9 +24,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.example.emsapp.R;
 import com.example.emsapp.base.BaseFragment;
 import com.example.emsapp.constants.ScheduleStatus;
+import com.example.emsapp.constants.UserType;
 import com.example.emsapp.db.ConsultationDbManager;
 import com.example.emsapp.model.AppUser;
 import com.example.emsapp.model.ConsultationRequest;
+import com.example.emsapp.util.Globals;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
@@ -96,9 +98,13 @@ public class ScheduleDetailsFragment extends BaseFragment {
             textViewEmail.setText(user.getEmail());
 
             if (ScheduleStatus.COMPLETE.getValue().equals(consultationRequest.getScheduleStatus())) {
-                buttonCall.setVisibility(View.INVISIBLE);
-                buttonClose.setVisibility(View.INVISIBLE);
+                buttonCall.setVisibility(View.GONE);
+                buttonClose.setVisibility(View.GONE);
             }
+        }
+
+        if (UserType.USER.getValue().equals(Globals.user.getUserType())) {
+            buttonClose.setVisibility(View.GONE);
         }
     }
 

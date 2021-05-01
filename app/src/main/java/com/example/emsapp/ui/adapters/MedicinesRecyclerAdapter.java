@@ -37,7 +37,7 @@ public class MedicinesRecyclerAdapter extends RecyclerView.Adapter<MedicinesRecy
         Medicine medicine = medicineList.get(position);
         holder.textViewMedicineName.setText(medicine.getMedicineName());
         holder.textViewPrescribedBy.setText(String.format(Locale.getDefault(), "Prescribed by %s", medicine.getPrescribedBy()));
-        holder.textViewRemainingDays.setText(String.format(Locale.getDefault(), "%d days remaining", medicine.getDaysRemaining()));
+        holder.textViewRemainingDays.setText(medicine.getRemark());
         holder.textViewMorningDoses.setText(getDosesFormat(medicine.getMorningDoses()));
         holder.textViewAfternoonDoses.setText(getDosesFormat(medicine.getAfterNoonDoses()));
         holder.textViewNightDoses.setText(getDosesFormat(medicine.getNightDoses()));

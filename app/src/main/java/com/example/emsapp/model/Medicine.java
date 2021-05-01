@@ -18,4 +18,7 @@ public class Medicine implements Serializable {
     private Float morningDoses;
     private Float afterNoonDoses;
     private Float nightDoses;
+    private Long startDate;
+    private Long endDate;
+    private String remark;
 }
