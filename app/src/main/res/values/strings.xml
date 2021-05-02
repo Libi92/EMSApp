@@ -32,4 +32,14 @@
     <string name="add">Add</string>
     <string name="save">Save</string>
     <string name="add_medicine_alert">Add Medicine Alert</string>
+    <string name="gender">Gender</string>
+    <string name="dob">DoB</string>
+    <string name="update">Update</string>
+    <string name="title_choose_profile_pic">Choose your profile picture</string>
+
+    <array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </array>
 </resources>

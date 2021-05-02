@@ -32,7 +32,7 @@
         android:id="@+id/nav_schedule"
         android:name="com.example.emsapp.ui.schedule.ScheduleFragment"
         android:label="@string/menu_schedule"
-        tools:layout="@layout/fragment_schedule" >
+        tools:layout="@layout/fragment_schedule">
         <action
             android:id="@+id/action_nav_schedule_to_nav_schedule_details"
             app:destination="@id/nav_schedule_details" />
@@ -63,4 +63,9 @@
         android:name="com.example.emsapp.ui.schedule.ScheduleDetailsFragment"
         android:label="Schedule Details"
         tools:layout="@layout/fragment_schedule_details" />
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.emsapp.ui.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

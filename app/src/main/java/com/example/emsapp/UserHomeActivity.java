@@ -28,6 +28,7 @@ public class UserHomeActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_profile,
                 R.id.nav_medicine, R.id.nav_consultation, R.id.nav_schedule)
                 .setDrawerLayout(drawer)
                 .build();

@@ -20,6 +20,8 @@ public class AppUser implements Serializable {
     @Builder.Default
     private String userType = UserType.USER.getValue();
     private String displayName;
+    private String dob;
+    private String gender;
     private String designation;
     private String email;
     private String password;

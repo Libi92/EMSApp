@@ -40,17 +40,8 @@ public class UserDbManager {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.d(TAG, "onDataChange: " + snapshot);
                 if (userListener != null) {
-                    if (snapshot.getValue() != null) {
-                        AppUser appUser = new AppUser();
-                        appUser.setUId(uId);
-                        appUser.setUserType(snapshot.child(USER_TYPE).getValue(String.class));
-                        appUser.setAddress(snapshot.child("address").getValue(String.class));
-                        appUser.setDisplayName(snapshot.child("displayName").getValue(String.class));
-                        appUser.setEmail(snapshot.child("email").getValue(String.class));
-                        appUser.setPhone(snapshot.child("phone").getValue(String.class));
-                        String status = snapshot.child("status").getValue(String.class);
-                        appUser.setStatus(status);
-
+                    if (snapshot != null) {
+                        AppUser appUser = snapshot.getValue(AppUser.class);
                         userListener.onGetUser(appUser);
                     }
                 }

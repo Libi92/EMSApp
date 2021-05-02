@@ -59,6 +59,12 @@ dependencies {
     /* --- Jitsi meet --- */
     implementation('org.jitsi.react:jitsi-meet-sdk:3.0.0') { transitive = true }
 
+    /* --- Round Image -- */
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    /* --- Filechooser --- */
+    implementation 'com.vincent.filepicker:MultiTypeFilePicker:1.0.8'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
