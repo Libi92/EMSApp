@@ -36,6 +36,8 @@
     <string name="dob">DoB</string>
     <string name="update">Update</string>
     <string name="title_choose_profile_pic">Choose your profile picture</string>
+    <string name="add_trusted_contacts">Trusted Contacts</string>
+    <string name="medical_records">Medical Records</string>
 
     <array name="gender">
         <item>Male</item>

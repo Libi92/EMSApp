@@ -15,12 +15,11 @@ import java.util.List;
 public class PrescriptionDbManager {
 
     private static final String PRESCRIPTION_DB_PATH = "consultation/%s/prescription";
-    private final FirebaseDatabase database;
-    private DatabaseReference prescriptionDbReference;
+    private final DatabaseReference prescriptionDbReference;
     private PrescriptionListener prescriptionListener;
 
     private PrescriptionDbManager(String uId) {
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         prescriptionDbReference = database.getReference(String.format(PRESCRIPTION_DB_PATH, uId));
     }
 
@@ -39,11 +38,10 @@ public class PrescriptionDbManager {
                 GenericTypeIndicator<List<Medicine>> typeIndicator = new GenericTypeIndicator<List<Medicine>>() {
                 };
 
-                if (snapshot != null) {
-                    List<Medicine> value = snapshot.getValue(typeIndicator);
-                    if (prescriptionListener != null && value != null) {
-                        prescriptionListener.onPrescriptions(value);
-                    }
+                List<Medicine> value = snapshot.getValue(typeIndicator);
+
+                if (prescriptionListener != null && value != null) {
+                    prescriptionListener.onPrescriptions(value);
                 }
             }
 

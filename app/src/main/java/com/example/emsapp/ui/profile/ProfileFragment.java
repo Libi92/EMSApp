@@ -35,11 +35,13 @@ import com.vincent.filepicker.activity.ImagePickActivity;
 import com.vincent.filepicker.filter.entity.ImageFile;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.IntStream;
 
 public class ProfileFragment extends BaseFragment implements StorageListener {
 
+    private static final String TAG = ProfileFragment.class.getSimpleName();
     private ImageView imageViewProfile;
     private EditText editTextName;
     private EditText editTextPhone;
@@ -48,6 +50,8 @@ public class ProfileFragment extends BaseFragment implements StorageListener {
     private EditText editTextDoB;
     private Spinner spinnerGender;
     private Button buttonUpdate;
+    private Button buttonAddTrustedContacts;
+    private Button buttonAddMedicalRecords;
     private ProgressDialog progressDialog;
 
     private String profileImagePath;
@@ -72,6 +76,8 @@ public class ProfileFragment extends BaseFragment implements StorageListener {
         editTextAddress = view.findViewById(R.id.editTextAddress);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         buttonUpdate = view.findViewById(R.id.buttonUpdate);
+        buttonAddTrustedContacts = view.findViewById(R.id.buttonAddTrustedContacts);
+        buttonAddMedicalRecords = view.findViewById(R.id.buttonAddMedicalRecords);
 
         AppUser appUser = Globals.user;
         editTextName.setText(appUser.getDisplayName());
@@ -110,6 +116,16 @@ public class ProfileFragment extends BaseFragment implements StorageListener {
             }
         });
 
+        buttonAddTrustedContacts.setOnClickListener(v -> {
+            TrustedContactsFragment contactsFragment = new TrustedContactsFragment();
+            contactsFragment.show(getChildFragmentManager(), TAG);
+        });
+
+        buttonAddMedicalRecords.setOnClickListener(v -> {
+            MedicalRecordsFragment recordsFragment = new MedicalRecordsFragment();
+            recordsFragment.show(getChildFragmentManager(), TAG);
+        });
+
         editTextDoB.setOnTouchListener((v, event) -> {
 
             if (event.equals(MotionEvent.ACTION_UP)) {
@@ -118,9 +134,7 @@ public class ProfileFragment extends BaseFragment implements StorageListener {
             return false;
         });
 
-        editTextDoB.setOnClickListener(v -> {
-            showDoBPicker();
-        });
+        editTextDoB.setOnClickListener(v -> showDoBPicker());
     }
 
     private void showDoBPicker() {
@@ -193,9 +207,14 @@ public class ProfileFragment extends BaseFragment implements StorageListener {
     }
 
     @Override
-    public void onUploadComplete(Uri uri) {
+    public void onUploadComplete(List<Uri> uriList) {
         dismissProgressDialog();
-        updateProfile(uri.toString());
+        updateProfile(uriList.get(0).toString());
+    }
+
+    @Override
+    public void onUpdateProgress(int currentPosition, int limit) {
+
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.example.emsapp.constants.FileType;
+import com.example.emsapp.model.FileModel;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -20,6 +21,12 @@ import timber.log.Timber;
 public class StorageManager {
     private final StorageReference storageRef;
     private final StorageListener storageListener;
+    private String uploadType = "SINGLE";
+    private boolean isLastFile = true;
+    private boolean isFirstFile = true;
+    private int currentFileIndex;
+    private int totalFiles;
+    private List<Uri> uriList = new ArrayList<>();
 
     public StorageManager(StorageListener storageListener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -47,8 +54,9 @@ public class StorageManager {
         StorageReference storageRef = this.storageRef.child(dir + fileName);
         UploadTask uploadTask = storageRef.putFile(file);
 
-        if (storageListener != null) {
+        if (storageListener != null && isFirstFile) {
             storageListener.onUploadStart();
+            isFirstFile = false;
         }
 
         uploadTask.addOnCompleteListener(task -> {
@@ -56,9 +64,14 @@ public class StorageManager {
             downloadUrl.addOnCompleteListener(task1 -> {
                 Uri uri = task1.getResult();
                 Timber.i("initListeners: adding Uri - %s", uri);
+                uriList.add(uri);
 
                 if (storageListener != null) {
-                    storageListener.onUploadComplete(uri);
+                    if (isLastFile) {
+                        storageListener.onUploadComplete(uriList);
+                    } else {
+                        storageListener.onUpdateProgress(currentFileIndex, totalFiles);
+                    }
                 }
             }).addOnFailureListener(exception -> {
                 Timber.i("initListeners: image upload failed");
@@ -68,5 +81,20 @@ public class StorageManager {
                 }
             });
         });
+    }
+
+    public void uploadMultipleFileUpload(List<FileModel> fileModels) {
+        uploadType = "MULTIPLE";
+        isLastFile = false;
+        totalFiles = fileModels.size();
+
+
+        for (currentFileIndex = 0; currentFileIndex < totalFiles; currentFileIndex++) {
+            FileModel model = fileModels.get(currentFileIndex);
+            if (currentFileIndex == totalFiles - 1) {
+                isLastFile = true;
+            }
+            uploadFile(model.getFileType(), model.getFilePath());
+        }
     }
 }
