@@ -21,12 +21,10 @@ import timber.log.Timber;
 public class StorageManager {
     private final StorageReference storageRef;
     private final StorageListener storageListener;
-    private String uploadType = "SINGLE";
-    private boolean isLastFile = true;
+    private final List<FileModel> fileModels = new ArrayList<>();
     private boolean isFirstFile = true;
     private int currentFileIndex;
     private int totalFiles;
-    private List<Uri> uriList = new ArrayList<>();
 
     public StorageManager(StorageListener storageListener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -34,7 +32,9 @@ public class StorageManager {
         this.storageListener = storageListener;
     }
 
-    public void uploadFile(FileType fileType, String path) {
+    public void uploadFile(FileModel model) {
+        FileType fileType = model.getFileType();
+        String path = model.getFilePath();
         Uri file = Uri.fromFile(new File(path));
         String fileName = file.getLastPathSegment();
         String[] fileNameSplit = fileName.split("\\.");
@@ -64,11 +64,14 @@ public class StorageManager {
             downloadUrl.addOnCompleteListener(task1 -> {
                 Uri uri = task1.getResult();
                 Timber.i("initListeners: adding Uri - %s", uri);
-                uriList.add(uri);
+                model.setFilePath(uri.toString());
+                fileModels.add(model);
+
+                currentFileIndex++;
 
                 if (storageListener != null) {
-                    if (isLastFile) {
-                        storageListener.onUploadComplete(uriList);
+                    if (currentFileIndex == totalFiles - 1) {
+                        storageListener.onUploadComplete(fileModels);
                     } else {
                         storageListener.onUpdateProgress(currentFileIndex, totalFiles);
                     }
@@ -84,17 +87,10 @@ public class StorageManager {
     }
 
     public void uploadMultipleFileUpload(List<FileModel> fileModels) {
-        uploadType = "MULTIPLE";
-        isLastFile = false;
         totalFiles = fileModels.size();
 
-
-        for (currentFileIndex = 0; currentFileIndex < totalFiles; currentFileIndex++) {
-            FileModel model = fileModels.get(currentFileIndex);
-            if (currentFileIndex == totalFiles - 1) {
-                isLastFile = true;
-            }
-            uploadFile(model.getFileType(), model.getFilePath());
+        for (FileModel model : fileModels) {
+            uploadFile(model);
         }
     }
 }

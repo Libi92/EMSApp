@@ -18,7 +18,7 @@ public class TrustedContactDbManager {
 
     private static final String CONTACTS_DB_PATH = "user/%s/trusted_contacts";
     private final DatabaseReference consultDbReference;
-    private TrustedContactListener contactListener;
+    private final TrustedContactListener contactListener;
 
 
     private TrustedContactDbManager(String uId, TrustedContactListener contactListener) {

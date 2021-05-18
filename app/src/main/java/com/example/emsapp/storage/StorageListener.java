@@ -1,13 +1,13 @@
 package com.example.emsapp.storage;
 
-import android.net.Uri;
+import com.example.emsapp.model.FileModel;
 
 import java.util.List;
 
 public interface StorageListener {
     void onUploadStart();
 
-    void onUploadComplete(List<Uri> uriList);
+    void onUploadComplete(List<FileModel> fileModels);
 
     void onUpdateProgress(int currentPosition, int limit);
 

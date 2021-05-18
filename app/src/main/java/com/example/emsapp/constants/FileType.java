@@ -1,6 +1,8 @@
 package com.example.emsapp.constants;
 
-public enum FileType {
+import java.io.Serializable;
+
+public enum FileType implements Serializable {
     IMAGE,
     DOC
 }

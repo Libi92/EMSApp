@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -27,9 +26,11 @@ import com.example.emsapp.base.BaseFragment;
 import com.example.emsapp.constants.FileType;
 import com.example.emsapp.db.UserDbManager;
 import com.example.emsapp.model.AppUser;
+import com.example.emsapp.model.FileModel;
 import com.example.emsapp.storage.StorageListener;
 import com.example.emsapp.storage.StorageManager;
 import com.example.emsapp.util.Globals;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vincent.filepicker.Constant;
 import com.vincent.filepicker.activity.ImagePickActivity;
 import com.vincent.filepicker.filter.entity.ImageFile;
@@ -50,8 +51,8 @@ public class ProfileFragment extends BaseFragment implements StorageListener {
     private EditText editTextDoB;
     private Spinner spinnerGender;
     private Button buttonUpdate;
-    private Button buttonAddTrustedContacts;
-    private Button buttonAddMedicalRecords;
+    private FloatingActionButton fabAddTrustedContacts;
+    private FloatingActionButton fabAddMedicalRecords;
     private ProgressDialog progressDialog;
 
     private String profileImagePath;
@@ -76,8 +77,8 @@ public class ProfileFragment extends BaseFragment implements StorageListener {
         editTextAddress = view.findViewById(R.id.editTextAddress);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         buttonUpdate = view.findViewById(R.id.buttonUpdate);
-        buttonAddTrustedContacts = view.findViewById(R.id.buttonAddTrustedContacts);
-        buttonAddMedicalRecords = view.findViewById(R.id.buttonAddMedicalRecords);
+        fabAddTrustedContacts = view.findViewById(R.id.fabAddTrustedContacts);
+        fabAddMedicalRecords = view.findViewById(R.id.fabAddMedicalRecords);
 
         AppUser appUser = Globals.user;
         editTextName.setText(appUser.getDisplayName());
@@ -109,19 +110,24 @@ public class ProfileFragment extends BaseFragment implements StorageListener {
         buttonUpdate.setOnClickListener(v -> {
 
             if (profileImagePath != null) {
+                FileModel model = FileModel.builder()
+                        .fileType(FileType.IMAGE)
+                        .filePath(profileImagePath)
+                        .build();
+
                 StorageManager storageManager = new StorageManager(this);
-                storageManager.uploadFile(FileType.IMAGE, profileImagePath);
+                storageManager.uploadFile(model);
             } else {
                 updateProfile(null);
             }
         });
 
-        buttonAddTrustedContacts.setOnClickListener(v -> {
+        fabAddTrustedContacts.setOnClickListener(v -> {
             TrustedContactsFragment contactsFragment = new TrustedContactsFragment();
             contactsFragment.show(getChildFragmentManager(), TAG);
         });
 
-        buttonAddMedicalRecords.setOnClickListener(v -> {
+        fabAddMedicalRecords.setOnClickListener(v -> {
             MedicalRecordsFragment recordsFragment = new MedicalRecordsFragment();
             recordsFragment.show(getChildFragmentManager(), TAG);
         });
@@ -207,9 +213,9 @@ public class ProfileFragment extends BaseFragment implements StorageListener {
     }
 
     @Override
-    public void onUploadComplete(List<Uri> uriList) {
+    public void onUploadComplete(List<FileModel> uriList) {
         dismissProgressDialog();
-        updateProfile(uriList.get(0).toString());
+        updateProfile(uriList.get(0).getFilePath());
     }
 
     @Override

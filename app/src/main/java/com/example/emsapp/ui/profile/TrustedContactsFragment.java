@@ -1,5 +1,6 @@
 package com.example.emsapp.ui.profile;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -99,7 +100,17 @@ public class TrustedContactsFragment extends BottomSheetDialogFragment implement
 
     @Override
     public void onDelete(TrustedContact contact) {
-        trustedContactList.remove(contact);
-        dbManager.saveContact(trustedContactList);
+        new AlertDialog.Builder(getContext())
+                .setTitle("Confirm Delete")
+                .setMessage(String.format("Delete %s from trusted contact?", contact.getName()))
+                .setPositiveButton("yes", (dialog, which) -> {
+                    trustedContactList.remove(contact);
+                    dbManager.saveContact(trustedContactList);
+                    dismiss();
+
+                    Objects.requireNonNull(recyclerViewContacts.getAdapter()).notifyDataSetChanged();
+                })
+                .setNegativeButton("no", ((dialog, which) -> dismiss()))
+                .show();
     }
 }

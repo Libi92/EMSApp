@@ -38,6 +38,8 @@
     <string name="title_choose_profile_pic">Choose your profile picture</string>
     <string name="add_trusted_contacts">Trusted Contacts</string>
     <string name="medical_records">Medical Records</string>
+    <string name="select_files">Select Files</string>
+    <string name="document_name">Document Name</string>
 
     <array name="gender">
         <item>Male</item>

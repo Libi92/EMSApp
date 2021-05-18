@@ -28,6 +28,7 @@ import com.example.emsapp.constants.UserType;
 import com.example.emsapp.db.ConsultationDbManager;
 import com.example.emsapp.model.AppUser;
 import com.example.emsapp.model.ConsultationRequest;
+import com.example.emsapp.ui.profile.MedicalRecordsFragment;
 import com.example.emsapp.util.Globals;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -63,6 +64,7 @@ public class ScheduleDetailsFragment extends BaseFragment {
     private String phone;
     private ConsultationRequest consultationRequest;
     private AppUser user;
+    private Button buttonMedicalRecords;
 
     @Nullable
     @Override
@@ -87,6 +89,7 @@ public class ScheduleDetailsFragment extends BaseFragment {
         buttonCall = view.findViewById(R.id.buttonCall);
         buttonAddPrescription = view.findViewById(R.id.buttonPrescription);
         buttonClose = view.findViewById(R.id.buttonClose);
+        buttonMedicalRecords = view.findViewById(R.id.buttonMedicalRecords);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -135,6 +138,14 @@ public class ScheduleDetailsFragment extends BaseFragment {
             Snackbar.make(getView(), "Consultation Completed", Snackbar.LENGTH_SHORT)
                     .setAction("Ok", v1 -> getChildFragmentManager().popBackStack())
                     .show();
+        });
+
+        buttonMedicalRecords.setOnClickListener(v -> {
+            MedicalRecordsFragment recordsFragment = new MedicalRecordsFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(MedicalRecordsFragment.ARG_USER_ID, user.getUId());
+            recordsFragment.setArguments(bundle);
+            recordsFragment.show(getChildFragmentManager(), TAG);
         });
     }
 
